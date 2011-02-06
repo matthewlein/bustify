@@ -7,7 +7,7 @@ HTMLImageElement.prototype.bustify = function( options ) {
 };
 
 bustify.randomNumber = function(low, high) {
-  return Math.floor( Math.random() * (1 + high - low) ) + low;
+	return Math.floor( Math.random() * (1 + high - low) ) + low;
 };
 
 bustify.makeSquares = function(imageToReplace, options) {
@@ -17,8 +17,8 @@ bustify.makeSquares = function(imageToReplace, options) {
 		imgW = image.width,
 		imgH = image.height,
 		opts = options,	
-		blockWidth = opts.width || 20,
-		blockHeight = opts.height || 20,
+		blockWidth = opts.width || 50,
+		blockHeight = opts.height || 50,
 		intensity = opts.intensity,
 		columns = Math.ceil( image.width / blockWidth ),
 		rows = Math.ceil( image.height / blockHeight ),
@@ -98,7 +98,7 @@ bustify.makeSquares = function(imageToReplace, options) {
 		theLinks = this.childNodes
 		
 		// make them explode
-		for (var i=0; i < theLinks.length; i++) {
+		for (var i = 0; i < theLinks.length; i++) {
 			explode(theLinks[i])
 		}
 		
