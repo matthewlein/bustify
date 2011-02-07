@@ -19,20 +19,17 @@ bustify.makeSquares = function(imageToReplace, options) {
 		opts = options,	
 		blockWidth = opts.width || 50,
 		blockHeight = opts.height || 50,
-		intensity = opts.intensity,
+		intensity = opts.intensity || 1,
 		columns = Math.ceil( image.width / blockWidth ),
 		rows = Math.ceil( image.height / blockHeight ),
 		holder = document.createElement('div');
 	
-	// create the holder
-	image.parentNode.appendChild(holder);
+	// swap the image for the div
+	image.parentNode.replaceChild(holder, image);
 	holder.style.width = blockWidth * columns + 'px';
 	holder.style.height = blockHeight * rows + 'px';
 	// adding perspective is what makes Z translation work
 	holder.style.WebkitPerspective = '300';
-	
-	// remove the image
-	image.parentNode.removeChild(image);
 	
 	explode = function(thing) {
 		
