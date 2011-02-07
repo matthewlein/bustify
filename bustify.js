@@ -1,4 +1,8 @@
-// author
+// matthewlein.com/experiments/bustify.html
+//
+// Developed by Matthew Lein
+//
+// Copyright 2011
 
 bustify = {};
 
