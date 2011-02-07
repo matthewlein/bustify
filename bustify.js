@@ -96,11 +96,11 @@ bustify.makeSquares = function(imageToReplace, options) {
 	holder.addEventListener('click', function() {
 		
 		// get all the links
-		theLinks = this.childNodes
+		theLinks = this.childNodes;
 		
 		// make them explode
 		for (var i = 0; i < theLinks.length; i++) {
-			explode(theLinks[i])
+			explode(theLinks[i]);
 		}
 		
 	}, false);
