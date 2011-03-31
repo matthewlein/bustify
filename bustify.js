@@ -62,7 +62,7 @@ bustify.makeSquares = function(imageToReplace, options) {
 		var that = this;
 		
 		setTimeout(function() {
-			that.style.webkitTransform = 'translate3d(0,0,0)';
+			that.style.WebkitTransform = 'translate3d(0,0,0)';
 		}, 200);
 		
 	};
@@ -93,7 +93,7 @@ bustify.makeSquares = function(imageToReplace, options) {
 			
 			
 			// when the transition ends, pause a moment, then go back
-			newLink.addEventListener('webkitTransitionEnd', onTransitionEnd, false);
+			newLink.addEventListener('WebkitTransitionEnd', onTransitionEnd, false);
 			
 		}
 	}
