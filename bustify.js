@@ -4,7 +4,7 @@
 //
 // Copyright 2011
 
-bustify = {};
+var bustify = {};
 
 HTMLImageElement.prototype.bustify = function( options ) {
 	bustify.makeSquares( this, options );
@@ -34,8 +34,12 @@ bustify.makeSquares = function(imageToReplace, options) {
 	holder.style.height = blockHeight * rows + 'px';
 	// adding perspective is what makes Z translation work
 	holder.style.WebkitPerspective = '300';
+	// add negative margin equal to the difference in image size and holder size
+	// can't use overflow:hidden
+	holder.style.marginRight = ( imgW - ( blockWidth * columns ) ) + 'px';
+	holder.style.marginBottom = ( imgH - ( blockHeight * rows ) ) + 'px';
 	
-	explode = function(thing) {
+	var explode = function(thing) {
 		
 		var randomTx = bustify.randomNumber(-imgW * intensity, imgW * intensity),
 			randomTy = bustify.randomNumber(-imgW * intensity, imgW * intensity),
@@ -46,6 +50,20 @@ bustify.makeSquares = function(imageToReplace, options) {
 			randomRa = bustify.randomNumber(0,180);
 
 		thing.style.WebkitTransform = 'translate3d(' + randomTx + 'px, ' + randomTy + 'px, ' + randomTz + 'px)' + 'rotate3d(' + randomRx + ','+ randomRy + ',' + randomRz + ',' + randomRa + 'deg)';
+		
+	};
+	
+	var onMouseOver = function() {
+		explode(this);
+	};
+	
+	var onTransitionEnd = function() {
+		
+		var that = this;
+		
+		setTimeout(function() {
+			that.style.webkitTransform = 'translate3d(0,0,0)';
+		}, 200);
 		
 	};
 	
@@ -71,23 +89,11 @@ bustify.makeSquares = function(imageToReplace, options) {
 			holder.appendChild(newLink);
 			
 			// add event listeners for hover to explode
-			newLink.addEventListener('mouseover', function() {
-				
-				explode(this)
-				
-			}, false);
+			newLink.addEventListener('mouseover', onMouseOver, false);
 			
 			
 			// when the transition ends, pause a moment, then go back
-			newLink.addEventListener('webkitTransitionEnd', function() {
-				
-				var that = this;
-				
-				setTimeout(function() {
-					that.style.webkitTransform = 'translate3d(0,0,0)';
-				}, 200);
-			
-			}, false);
+			newLink.addEventListener('webkitTransitionEnd', onTransitionEnd, false);
 			
 		}
 	}
@@ -96,7 +102,7 @@ bustify.makeSquares = function(imageToReplace, options) {
 	holder.addEventListener('click', function() {
 		
 		// get all the links
-		theLinks = this.childNodes;
+		var theLinks = this.childNodes;
 		
 		// make them explode
 		for (var i = 0; i < theLinks.length; i++) {
