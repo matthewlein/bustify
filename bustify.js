@@ -6,7 +6,7 @@
 //
 // Copyright 2011
 
-var bustify = (function(){
+(function(){
 
     HTMLImageElement.prototype.bustify = function( options ) {
         new Bustify( this, options );
