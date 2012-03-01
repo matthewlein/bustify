@@ -12,7 +12,7 @@ var bustify = (function(){
         new Bustify( this, options );
     };
 
-    function Bustify(img, options) {
+    function Bustify( img, options ) {
     
         this.bust = this;
         this.img = img;
@@ -26,14 +26,14 @@ var bustify = (function(){
         this.intensity = this.opts.intensity || 1;
         this.columns = Math.ceil( img.width / this.blockWidth );
         this.rows = Math.ceil( img.height / this.blockHeight );
-        this.holder = document.createElement('div');
+        this.holder = document.createElement( 'div' );
     
         this.init();
     }
 
 
-    Bustify.prototype.randomNumber = function(low, high) {
-        return Math.floor( Math.random() * (1 + high - low) ) + low;
+    Bustify.prototype.randomNumber = function( low, high ) {
+        return Math.floor( Math.random() * ( 1 + high - low ) ) + low;
     };
     
     Bustify.prototype.init = function() {
@@ -55,12 +55,12 @@ var bustify = (function(){
         this.holder.style.WebkitPerspective = '300px';
         
         // make the blocks
-        for (var y = 0; y < this.rows; y++) {
+        for ( var y = 0; y < this.rows; y++ ) {
         
-            for (var x = 0; x < this.columns; x++) {
+            for ( var x = 0; x < this.columns; x++ ) {
             
                 // create a link
-                var newLink = document.createElement('span');
+                var newLink = document.createElement( 'span' );
                 // and style it based on the block size and img
                 newLink.style.width = this.blockWidth + 'px';
                 newLink.style.height = this.blockHeight + 'px';
@@ -70,20 +70,20 @@ var bustify = (function(){
                 newLink.style.cursor = 'pointer';
                 newLink.style.WebkitTransition = 'all 500ms ease-out';
                 newLink.style.background = 'url(' + this.img.src + ') no-repeat';
-                newLink.style.backgroundPosition = -(x * this.blockWidth) + 'px ' + -(y * this.blockHeight) + 'px';
+                newLink.style.backgroundPosition = -( x * this.blockWidth ) + 'px ' + -( y * this.blockHeight ) + 'px';
                 
                 // store reference to obj instance
                 newLink.buster = this;
                 
                 // add the newLink
                 //TODO: look at documentfragment approach
-                this.holder.appendChild(newLink);
+                this.holder.appendChild( newLink );
             
             }
         }
     
         // swap the img for the div
-        this.img.parentNode.replaceChild(this.holder, this.img);
+        this.img.parentNode.replaceChild( this.holder, this.img );
 
     };
 
@@ -93,7 +93,7 @@ var bustify = (function(){
         
         that.holder.addEventListener('webkitTransitionEnd', function(event) {
             
-            that.onTransitionEnd.call(event.target);
+            that.onTransitionEnd.call( event.target );
         
         }, false);
         
@@ -101,7 +101,7 @@ var bustify = (function(){
         
             // if target is a span, explode it
             if ( event.target.tagName === "SPAN" ) {
-                that.explode.call(event.target);
+                that.explode.call( event.target );
             }
         
         }, false);
@@ -124,13 +124,13 @@ var bustify = (function(){
     
     Bustify.prototype.explode = function() {
     
-        var randomTx = this.buster.randomNumber(-this.buster.imgW * this.buster.intensity, this.buster.imgW * this.buster.intensity),
-            randomTy = this.buster.randomNumber(-this.buster.imgW * this.buster.intensity, this.buster.imgW * this.buster.intensity),
-            randomTz = this.buster.randomNumber(-this.buster.imgW * this.buster.intensity, this.buster.imgW * this.buster.intensity),
-            randomRx = this.buster.randomNumber(-360,360),
-            randomRy = this.buster.randomNumber(-360,360),
-            randomRz = this.buster.randomNumber(-360,360),
-            randomRa = this.buster.randomNumber(0,180);
+        var randomTx = this.buster.randomNumber( -this.buster.imgW * this.buster.intensity, this.buster.imgW * this.buster.intensity ),
+            randomTy = this.buster.randomNumber( -this.buster.imgW * this.buster.intensity, this.buster.imgW * this.buster.intensity ),
+            randomTz = this.buster.randomNumber( -this.buster.imgW * this.buster.intensity, this.buster.imgW * this.buster.intensity ),
+            randomRx = this.buster.randomNumber( -360,360 ),
+            randomRy = this.buster.randomNumber( -360,360 ),
+            randomRz = this.buster.randomNumber( -360,360 ),
+            randomRa = this.buster.randomNumber( 0,180 );
             
         // TODO: Use Modernizer
         this.style.WebkitTransform = 'translate3d(' + randomTx + 'px, ' + randomTy + 'px, ' + randomTz + 'px)' + 'rotate3d(' + randomRx + ','+ randomRy + ',' + randomRz + ',' + randomRa + 'deg)';
