@@ -8,9 +8,12 @@ Bustify takes a single object with options:
 	document.getElementById('solar').bustify({
 	    width : 50,
 	    height : 50,
-	    intensity : 1
+	    intensity : 1,
+	    perspective : "300px"
 	})
 
 `width` and `height` set the size of the blocks. Note that due to rounding issues, the resulting div may be larger than the original image. I put in negative margins to counteract that, but some weird things may result.
 
 `intensity` is a multiplier number that controls how far the blocks fly, and is based on the image width. 1 is equal to the image width.
+
+`perspective` sets the 3D space perspective. It must include "px" to work in Firefox.
