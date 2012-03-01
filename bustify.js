@@ -1,8 +1,8 @@
-// matthewlein.com/experiments/this.html
+// matthewlein.com/experiments/bustify.html
 //
 // Developed by Matthew Lein
 //
-// REQUIRES MODERNIZER
+// REQUIRES MODERNIZR
 //
 // Copyright 2011
 
