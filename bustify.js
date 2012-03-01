@@ -28,12 +28,17 @@ var bustify = (function(){
         this.rows = Math.ceil( img.height / this.blockHeight );
         this.holder = document.createElement('div');
     
-        this.makeSquares();
+        this.init();
     }
 
 
     Bustify.prototype.randomNumber = function(low, high) {
         return Math.floor( Math.random() * (1 + high - low) ) + low;
+    };
+    
+    Bustify.prototype.init = function() {
+        this.bindEvents();
+        this.makeSquares();
     };
 
     Bustify.prototype.makeSquares = function() {
@@ -55,7 +60,7 @@ var bustify = (function(){
             for (var x = 0; x < this.columns; x++) {
             
                 // create a link
-                var newLink = document.createElement('a');
+                var newLink = document.createElement('span');
                 // and style it based on the block size and img
                 newLink.style.width = this.blockWidth + 'px';
                 newLink.style.height = this.blockHeight + 'px';
@@ -65,65 +70,51 @@ var bustify = (function(){
                 newLink.style.cursor = 'pointer';
                 newLink.style.WebkitTransition = 'all 500ms ease-out';
                 newLink.style.background = 'url(' + this.img.src + ') no-repeat';
-                newLink.style.backgroundPosition = -(x * this.blockWidth) + 'px' + ' ' + -(y * this.blockHeight) + 'px';
-            
+                newLink.style.backgroundPosition = -(x * this.blockWidth) + 'px ' + -(y * this.blockHeight) + 'px';
+                
+                // store reference to obj instance
+                newLink.buster = this;
+                
                 // add the newLink
                 //TODO: look at documentfragment approach
                 this.holder.appendChild(newLink);
-            
-                // add event listeners for hover to explode
-                // TODO: use delegation
-                newLink.addEventListener('mouseover', onMouseOver, false);
-            
-            
-                // when the transition ends, pause a moment, then go back
-                // TODO: use modernizer
-                newLink.addEventListener('WebkitTransitionEnd', onTransitionEnd, false);
             
             }
         }
     
         // swap the img for the div
-        img.parentNode.replaceChild(holder, img);
+        this.img.parentNode.replaceChild(this.holder, this.img);
 
     };
 
     Bustify.prototype.bindEvents = function(){
         
+        var that = this;
         
-        var onMouseOver = function() {
-            explode(this);
-        };
-    
-        var onTransitionEnd = function() {
+        that.holder.addEventListener('webkitTransitionEnd', function(event) {
+            
+            that.onTransitionEnd.call(event.target);
         
-            var that = bust;
+        }, false);
         
-            setTimeout(function() {
-                that.style.WebkitTransform = 'translate3d(0,0,0)';
-            }, 200);
-        
-        };
-        
-        holder.addEventListener('mouseover', function(event) {
+        that.holder.addEventListener('mouseover', function(event) {
         
             // if target is a span, explode it
-            if ( event.target ) {
-                event.target.explode();
+            if ( event.target.tagName === "SPAN" ) {
+                that.explode.call(event.target);
             }
         
         }, false);
 
     
         // click the holder to make everything explode
-        holder.addEventListener('click', function() {
+        that.holder.addEventListener('click', function() {
         
             // get all the links
-            var theLinks = this.childNodes;
-        
-            // make them explode
-            for (var i = 0; i < theLinks.length; i++) {
-                explode(theLinks[i]);
+            var theLinks = that.holder.childNodes;
+            
+            for (var i = theLinks.length - 1; i >= 0; i--){
+                that.explode.call( theLinks[i] );
             }
         
         }, false);
@@ -131,19 +122,29 @@ var bustify = (function(){
     };
     
     
-    Bustify.prototype.explode = function(thing) {
+    Bustify.prototype.explode = function() {
     
-        var randomTx = bust.randomNumber(-imgW * intensity, imgW * intensity),
-            randomTy = bust.randomNumber(-imgW * intensity, imgW * intensity),
-            randomTz = bust.randomNumber(-imgW * intensity, imgW * intensity),
-            randomRx = bust.randomNumber(-360,360),
-            randomRy = bust.randomNumber(-360,360),
-            randomRz = bust.randomNumber(-360,360),
-            randomRa = bust.randomNumber(0,180);
+        var randomTx = this.buster.randomNumber(-this.buster.imgW * this.buster.intensity, this.buster.imgW * this.buster.intensity),
+            randomTy = this.buster.randomNumber(-this.buster.imgW * this.buster.intensity, this.buster.imgW * this.buster.intensity),
+            randomTz = this.buster.randomNumber(-this.buster.imgW * this.buster.intensity, this.buster.imgW * this.buster.intensity),
+            randomRx = this.buster.randomNumber(-360,360),
+            randomRy = this.buster.randomNumber(-360,360),
+            randomRz = this.buster.randomNumber(-360,360),
+            randomRa = this.buster.randomNumber(0,180);
             
         // TODO: Use Modernizer
-        thing.style.WebkitTransform = 'translate3d(' + randomTx + 'px, ' + randomTy + 'px, ' + randomTz + 'px)' + 'rotate3d(' + randomRx + ','+ randomRy + ',' + randomRz + ',' + randomRa + 'deg)';
+        this.style.WebkitTransform = 'translate3d(' + randomTx + 'px, ' + randomTy + 'px, ' + randomTz + 'px)' + 'rotate3d(' + randomRx + ','+ randomRy + ',' + randomRz + ',' + randomRa + 'deg)';
+    
+    };
+    
+    Bustify.prototype.onTransitionEnd = function() {
+
+        var that = this;
+        // TODO USE MODERNIZER
+        setTimeout(function() {
+            that.style.WebkitTransform = 'translate3d(0,0,0)';
+        }, 200);
     
     };
 
-})()
+})();
