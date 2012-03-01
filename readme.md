@@ -1,5 +1,5 @@
 #Bustify
-Bustify is a JavaScript that busts any image into a series of boxes. Right now only Webkit browsers is supported. Hover to bust 1 box at a time, click to explode them all
+Bustify is a JavaScript that busts any image into a series of boxes. Right now only Webkit browsers are supported. Hover to bust 1 box at a time, click to explode them all.
 
 ##How to Use
 
